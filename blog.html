@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Blog & Events - Texas Marketing Strategies</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Marketing Blog, Digital Marketing Events" name="keywords">
+    <meta content="Latest insights and events in digital marketing" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- Custom Stylesheet -->
+    <link href="css/style_blog.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Contenedor del traductor -->
+<div class="translator-widget" id="translatorWidget">
+    <!-- Botón minimizado vertical -->
+    <button class="translator-mini" id="translatorMini">
+        <img src="https://flagcdn.com/w40/us.png" alt="Language" class="mini-flag" id="miniFlag">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Panel expandido vertical -->
+    <div class="translator-panel" id="translatorPanel">
+        <!-- Header con botón cerrar -->
+        <div class="panel-header">
+            <i class="fas fa-language"></i>
+            <button class="panel-close" id="panelClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Opciones de idioma verticales -->
+        <div class="language-options">
+            <div class="language-option active" data-lang="en" title="English">
+                <img src="https://flagcdn.com/w40/us.png" alt="EN">
+                <span>EN</span>
+            </div>
+            <div class="language-option" data-lang="es" title="Español">
+                <img src="https://flagcdn.com/w40/es.png" alt="ES">
+                <span>ES</span>
+            </div>
+            <div class="language-option" data-lang="fr" title="Français">
+                <img src="https://flagcdn.com/w40/fr.png" alt="FR">
+                <span>FR</span>
+            </div>
+            <div class="language-option" data-lang="de" title="Deutsch">
+                <img src="https://flagcdn.com/w40/de.png" alt="DE">
+                <span>DE</span>
+            </div>
+            <div class="language-option" data-lang="pt" title="Português">
+                <img src="https://flagcdn.com/w40/pt.png" alt="PT">
+                <span>PT</span>
+            </div>
+            <div class="language-option" data-lang="zh-CN" title="中文">
+                <img src="https://flagcdn.com/w40/cn.png" alt="ZH">
+                <span>ZH</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Google Translate Element -->
+<div id="google_translate_element" style="display: none !important;"></div>
+<!-- ===== ESTILOS DEL TRADUCTOR VERTICAL ===== -->
+<style>
+/* Variables */
+:root {
+    --translator-primary: #362420;
+    --translator-accent: #d4a574;
+    --translator-white: #ffffff;
+    --translator-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Container Principal */
+.translator-widget {
+    position: fixed;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    z-index: 9998;
+    transition: all 0.3s ease;
+}
+
+/* Botón Minimizado Vertical */
+.translator-mini {
+    width: 45px;
+    height: 100px;
+    background: var(--translator-white);
+    border: 2px solid var(--translator-accent);
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--translator-shadow);
+}
+
+.translator-mini:hover {
+    background: var(--translator-accent);
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(212, 165, 116, 0.5);
+}
+
+.mini-flag {
+    width: 28px;
+    height: 21px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.translator-mini i {
+    font-size: 1rem;
+    color: var(--translator-primary);
+    transition: color 0.3s ease;
+}
+
+.translator-mini:hover i {
+    color: var(--translator-white);
+}
+
+/* Panel Expandido Vertical */
+.translator-panel {
+    position: absolute;
+    top: 0;
+    right: 60px;
+    background: var(--translator-white);
+    border: 2px solid var(--translator-accent);
+    border-radius: 20px;
+    padding: 0.8rem;
+    box-shadow: var(--translator-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+    min-width: 70px;
+}
+
+.translator-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Header del Panel */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: linear-gradient(135deg, var(--translator-primary), #4a3530);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+}
+
+.panel-header i.fa-language {
+    color: var(--translator-accent);
+    font-size: 1.2rem;
+}
+
+.panel-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.2rem;
+    transition: transform 0.3s ease;
+}
+
+.panel-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Opciones de Idioma Verticales */
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.language-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.6rem 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.language-option:hover {
+    background: var(--translator-accent);
+    transform: scale(1.05);
+}
+
+.language-option.active {
+    background: rgba(212, 165, 116, 0.3);
+}
+
+.language-option.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 70%;
+    background: var(--translator-accent);
+    border-radius: 0 3px 3px 0;
+}
+
+.language-option img {
+    width: 32px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.language-option span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--translator-primary);
+}
+
+/* Animación de entrada */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(-50%);
+    }
+}
+
+.translator-widget {
+    animation: slideInRight 0.5s ease-out;
+}
+
+/* Loader durante traducción */
+.translation-loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(54, 36, 32, 0.95);
+    color: white;
+    padding: 1.5rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.translation-loader.active {
+    display: flex;
+}
+
+.loader-spinner {
+    width: 35px;
+    height: 35px;
+    border: 3px solid rgba(212, 165, 116, 0.3);
+    border-top-color: #d4a574;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loader-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .translator-widget {
+        top: auto;
+        bottom: 100px;
+        right: 10px;
+        transform: none;
+    }
+    
+    .translator-mini {
+        width: 40px;
+        height: 85px;
+    }
+    
+    .mini-flag {
+        width: 24px;
+        height: 18px;
+    }
+    
+    .translator-panel {
+        right: 50px;
+    }
+}
+
+/* Ocultar elementos de Google Translate */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-spinner-pos,
+.skiptranslate iframe {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+    position: static !important;
+}
+
+.goog-logo-link {
+    display: none !important;
+}
+
+#google_translate_element {
+    display: none !important;
+}
+
+/* Ajuste para que no moleste al scroll */
+.translator-widget {
+    pointer-events: auto;
+}
+
+.translator-widget.minimized {
+    pointer-events: none;
+}
+
+.translator-mini {
+    pointer-events: auto;
+}
+</style>
+
+<!-- Loader -->
+<div class="translation-loader" id="translationLoader">
+    <div class="loader-spinner"></div>
+    <span class="loader-text">Translating...</span>
+</div>
+
+<!-- ===== JAVASCRIPT DEL TRADUCTOR VERTICAL ===== -->
+<script type="text/javascript">
+// ===== CONFIGURACIÓN =====
+const languageFlags = {
+    'en': { flag: 'https://flagcdn.com/w40/us.png', name: 'English' },
+    'es': { flag: 'https://flagcdn.com/w40/es.png', name: 'Español' },
+    'fr': { flag: 'https://flagcdn.com/w40/fr.png', name: 'Français' },
+    'de': { flag: 'https://flagcdn.com/w40/de.png', name: 'Deutsch' },
+    'pt': { flag: 'https://flagcdn.com/w40/pt.png', name: 'Português' },
+    'zh-CN': { flag: 'https://flagcdn.com/w40/cn.png', name: '中文' }
+};
+
+let translateReady = false;
+let currentLanguage = 'en';
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', function() {
+    initTranslator();
+    
+    // Cargar Google Translate
+    const script = document.createElement('script');
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.body.appendChild(script);
+});
+
+// ===== CALLBACK DE GOOGLE TRANSLATE =====
+window.googleTranslateElementInit = function() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,es,fr,de,pt,zh-CN',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
+        multilanguagePage: true
+    }, 'google_translate_element');
+    
+    setTimeout(() => {
+        translateReady = true;
+        console.log('✅ Traductor vertical listo');
+        
+        // Restaurar idioma guardado
+        const savedLang = getCookie('googtrans');
+        if (savedLang) {
+            const lang = savedLang.split('/')[2];
+            if (lang && lang !== 'en') {
+                updateMiniFlag(lang);
+                updateActiveOption(lang);
+                currentLanguage = lang;
+            }
+        }
+    }, 1000);
+};
+
+// ===== INICIALIZAR TRADUCTOR =====
+function initTranslator() {
+    const mini = document.getElementById('translatorMini');
+    const panel = document.getElementById('translatorPanel');
+    const close = document.getElementById('panelClose');
+    const options = document.querySelectorAll('.language-option');
+    
+    // Abrir panel
+    mini.addEventListener('click', function(e) {
+        e.stopPropagation();
+        panel.classList.toggle('active');
+    });
+    
+    // Cerrar panel
+    close.addEventListener('click', function(e) {
+        e.stopPropagation();
+        panel.classList.remove('active');
+    });
+    
+    // Cerrar al hacer click fuera
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.translator-widget')) {
+            panel.classList.remove('active');
+        }
+    });
+    
+    // Seleccionar idioma
+    options.forEach(option => {
+        option.addEventListener('click', function() {
+            const lang = this.dataset.lang;
+            
+            if (lang === currentLanguage) {
+                panel.classList.remove('active');
+                return;
+            }
+            
+            changeLanguage(lang);
+            updateActiveOption(lang);
+            updateMiniFlag(lang);
+            currentLanguage = lang;
+            
+            panel.classList.remove('active');
+        });
+    });
+}
+
+// ===== CAMBIAR IDIOMA =====
+function changeLanguage(targetLang) {
+    if (!translateReady) {
+        setTimeout(() => changeLanguage(targetLang), 500);
+        return;
+    }
+    
+    showLoader();
+    
+    const domain = window.location.hostname;
+    
+    // Limpiar cookies
+    deleteCookie('googtrans', '/', domain);
+    deleteCookie('googtrans', '/', '.' + domain);
+    
+    // Establecer nueva cookie
+    if (targetLang === 'en') {
+        setCookie('googtrans', '/en/en', 1, '/', domain);
+    } else {
+        setCookie('googtrans', '/en/' + targetLang, 1, '/', domain);
+    }
+    
+    // Trigger del select
+    setTimeout(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = targetLang;
+            select.dispatchEvent(new Event('change'));
+        }
+        
+        // Recargar página
+        setTimeout(() => {
+            location.reload();
+        }, 300);
+    }, 100);
+}
+
+// ===== ACTUALIZAR FLAG MINI =====
+function updateMiniFlag(lang) {
+    const miniFlag = document.getElementById('miniFlag');
+    const langData = languageFlags[lang];
+    
+    if (langData) {
+        miniFlag.src = langData.flag;
+        miniFlag.alt = langData.name;
+    }
+}
+
+// ===== ACTUALIZAR OPCIÓN ACTIVA =====
+function updateActiveOption(lang) {
+    document.querySelectorAll('.language-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+    
+    const option = document.querySelector(`[data-lang="${lang}"]`);
+    if (option) {
+        option.classList.add('active');
+    }
+}
+
+// ===== FUNCIONES DE COOKIES =====
+function setCookie(name, value, days, path, domain) {
+    let expires = '';
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = '; expires=' + date.toUTCString();
+    }
+    
+    let cookieString = name + '=' + value + expires + '; path=' + (path || '/');
+    if (domain) {
+        cookieString += '; domain=' + domain;
+    }
+    document.cookie = cookieString;
+}
+
+function getCookie(name) {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function deleteCookie(name, path, domain) {
+    if (getCookie(name)) {
+        let cookieString = name + '=; Max-Age=-99999999; path=' + (path || '/');
+        if (domain) {
+            cookieString += '; domain=' + domain;
+        }
+        document.cookie = cookieString;
+    }
+}
+
+// ===== LOADER =====
+function showLoader() {
+    const loader = document.getElementById('translationLoader');
+    loader.classList.add('active');
+    
+    setTimeout(() => {
+        loader.classList.remove('active');
+    }, 2000);
+}
+
+console.log('🌐 Traductor vertical minimizado listo');
+</script>
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar" id="navbar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <img src="img/logo.png" alt="Logo" width="150px" height="150px">
+            </a>
+
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="service.html" class="nav-item nav-link">Service</a>
+                    <a href="inter.html" class="nav-item nav-link">Internship</a>
+                    <a href="blog.html" class="nav-item nav-link active">Blog</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Hero Start -->
+    <section class="hero-blog">
+        <div class="hero-content">
+            <h1>Blog & Events</h1>
+            <h2>Digital Marketing Insights</h2>
+            <p>Stay updated with the latest trends, strategies, and events in digital marketing</p>
+        </div>
+    </section>
+    <!-- Hero End -->
+
+    <!-- Blog Articles Start -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary">Latest Articles</h4>
+                <h1>Marketing Insights</h1>
+            </div>
+
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="img/blog-1.jpg" alt="Blog 1">
+                        <span class="blog-category">SEO</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> January 15, 2025</span>
+                            <span><i class="far fa-user"></i> Marketing Team</span>
+                        </div>
+                        <h3>The Future of SEO in 2025</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum exercitationem iste necessitatibus corporis expedita facilis xxxxxxxxxxxx xxxxxx xxxxx.</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="img/blog-2.jpg" alt="Blog 2">
+                        <span class="blog-category">Social Media</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> January 10, 2025</span>
+                            <span><i class="far fa-user"></i> Content Team</span>
+                        </div>
+                        <h3>Social Media Trends to Watch</h3>
+                        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud xxxxxxxxxxxx xxxxxxxx xxxxx.</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="img/blog-3.jpg" alt="Blog 3">
+                        <span class="blog-category">Content Marketing</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> January 5, 2025</span>
+                            <span><i class="far fa-user"></i> Strategy Team</span>
+                        </div>
+                        <h3>Content Marketing Best Practices</h3>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur xxxxxxxxxxxx xxxxxxx xxxxx.</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Articles End -->
+
+    <!-- Comparison Section Start -->
+    <section class="comparison-section">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary">Make the Right Choice</h4>
+                <h1>Digital Marketing vs Organic Marketing</h1>
+            </div>
+
+            <div class="comparison-container">
+                <div class="comparison-card digital">
+                    <div class="comparison-header">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Digital Marketing</h3>
+                    </div>
+                    <ul class="comparison-list">
+                        <li><i class="fas fa-check"></i> Immediate Results</li>
+                        <li><i class="fas fa-check"></i> Targeted Audience</li>
+                        <li><i class="fas fa-check"></i> Measurable ROI</li>
+                        <li><i class="fas fa-check"></i> Scalable Campaigns</li>
+                        <li><i class="fas fa-check"></i> Real-time Analytics</li>
+                        <li><i class="fas fa-check"></i> Global Reach</li>
+                        <li><i class="fas fa-times"></i> Requires Budget</li>
+                        <li><i class="fas fa-times"></i> Ongoing Costs</li>
+                    </ul>
+                    <div class="comparison-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price"></span>
+                    </div>
+                </div>
+
+                <div class="comparison-card organic featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <div class="comparison-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Organic Marketing</h3>
+                    </div>
+                    <ul class="comparison-list">
+                        <li><i class="fas fa-check"></i> Long-term Growth</li>
+                        <li><i class="fas fa-check"></i> Builds Authority</li>
+                        <li><i class="fas fa-check"></i> Sustainable Traffic</li>
+                        <li><i class="fas fa-check"></i> Brand Trust</li>
+                        <li><i class="fas fa-check"></i> Cost-Effective</li>
+                        <li><i class="fas fa-check"></i> Quality Leads</li>
+                        <li><i class="fas fa-times"></i> Takes Time</li>
+                        <li><i class="fas fa-times"></i> Requires Patience</li>
+                    </ul>
+                    <div class="comparison-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Comparison Section End -->
+
+    <!-- Mind Map Section Start -->
+    <section class="mindmap-section">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary">Common Mistakes</h4>
+                <h1>Marketing Errors to Avoid</h1>
+            </div>
+
+            <div class="mindmap-container">
+                <div class="mindmap-center">
+                    <div class="center-node">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Marketing Errors</span>
+                    </div>
+                </div>
+
+                <div class="mindmap-branch branch-1">
+                    <div class="branch-node">
+                        <i class="fas fa-bullseye"></i>
+                        <h4>Strategy Errors</h4>
+                        <ul>
+                            <li>No clear goals</li>
+                            <li>Wrong target audience</li>
+                            <li>Lack of research</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mindmap-branch branch-2">
+                    <div class="branch-node">
+                        <i class="fas fa-users"></i>
+                        <h4>Audience Mistakes</h4>
+                        <ul>
+                            <li>Ignoring feedback</li>
+                            <li>Generic messaging</li>
+                            <li>Wrong platforms</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mindmap-branch branch-3">
+                    <div class="branch-node">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Measurement Errors</h4>
+                        <ul>
+                            <li>No tracking</li>
+                            <li>Wrong metrics</li>
+                            <li>No optimization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mindmap-branch branch-4">
+                    <div class="branch-node">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h4>Budget Mistakes</h4>
+                        <ul>
+                            <li>Overspending</li>
+                            <li>No ROI tracking</li>
+                            <li>Wrong allocation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Mind Map Section End -->
+
+    <!-- Events Section Start -->
+    <section class="events-section">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary">Join Us</h4>
+                <h1>Upcoming Events</h1>
+            </div>
+
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">25</span>
+                        <span class="month">JAN</span>
+                    </div>
+                    <div class="event-content">
+                        <h3>Digital Marketing Workshop</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Online Event</p>
+                        <p class="event-description">Lorem ipsum dolor sit amet consectetur adipisicing elit xxxxxxxxxx xxxxxxx xxxxx xxxxx.</p>
+                        <a href="#" class="event-btn">Register Now</a>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">15</span>
+                        <span class="month">FEB</span>
+                    </div>
+                    <div class="event-content">
+                        <h3>SEO Masterclass 2025</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Texas</p>
+                        <p class="event-description">Sed do eiusmod tempor incididunt ut labore et dolore xxxxxxxxxx xxxxxxx xxxxx xxxxx.</p>
+                        <a href="#" class="event-btn">Register Now</a>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="day">10</span>
+                        <span class="month">MAR</span>
+                    </div>
+                    <div class="event-content">
+                        <h3>Social Media Summit</h3>
+                        <p class="event-location"><i class="fas fa-map-marker-alt"></i> Hybrid Event</p>
+                        <p class="event-description">Duis aute irure dolor in reprehenderit in voluptate xxxxxxxxxx xxxxxxx xxxxx xxxxx.</p>
+                        <a href="#" class="event-btn">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Events Section End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative">
+        <div class="row mx-0 pt-5 px-sm-3 px-lg-5 mt-4">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h2 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Have an Idea? Let's Get Started</h2>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>Texas</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+1 (945) 308-5999</p>
+                <p class="m-0"><i class="fa fa-envelope mr-2"></i>notary@texasmarketingstrategies.net</p>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Follow Us</h4>
+                <p>Our social media</p>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-lg btn-outline-light btn-lg-square" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Newsletter</h4>
+                <p>For more information, contact us via email.</p>
+                <div class="w-100">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="Your Email">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary font-weight-bold px-3">Contact</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-center text-white border-top mt-4 py-4 px-sm-3 px-md-5">
+            <p class="mb-2 text-white">Copyright &copy; <a class="font-weight-bold" href="#">Texas Marketing Strategies</a>. All Rights Reserved.</p>
+            <p class="m-0 text-white">Designed by <a class="font-weight-bold" href="mailto:notary@texasmarketingstrategies.net">Texas Marketing Strategies</a></p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    <script src="js/blog.js"></script>
+
+    
+
+<!-- Chatbot Container -->
+<div class="chatbot-container" id="chatbot">
+    <!-- Botón flotante -->
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-comments"></i>
+        <span class="chatbot-badge">1</span>
+    </button>
+
+    <!-- Ventana del Chat -->
+    <div class="chatbot-window" id="chatbotWindow">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">
+                    <img src="img/logo.png" alt="Texas Marketing">
+                </div>
+                <div>
+                    <h4>Texas Marketing</h4>
+                    <span class="chatbot-status">
+                        <span class="status-dot"></span> Online
+                    </span>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mensajes -->
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Mensaje de bienvenida -->
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <img src="img/logo.png" alt="Bot">
+                </div>
+                <div class="message-content">
+                    <p>👋 ¡Hola! Soy el asistente de Texas Marketing Strategies.</p>
+                    <p>¿En qué puedo ayudarte hoy?</p>
+                </div>
+            </div>
+
+            <!-- Opciones rápidas iniciales -->
+            <div class="quick-replies" id="quickReplies">
+                <button class="quick-reply" data-action="services">
+                    <i class="fas fa-briefcase"></i> Ver Servicios
+                </button>
+                <button class="quick-reply" data-action="schedule">
+                    <i class="far fa-calendar"></i> Agendar Reunión
+                </button>
+                <button class="quick-reply" data-action="internship">
+                    <i class="fas fa-graduation-cap"></i> Programa de Becarios
+                </button>
+                <button class="quick-reply" data-action="contact">
+                    <i class="fas fa-envelope"></i> Contacto
+                </button>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chatbot-input">
+            <input 
+                type="text" 
+                id="chatbotInput" 
+                placeholder="Escribe tu mensaje..."
+                autocomplete="off"
+            >
+            <button class="chatbot-send" id="chatbotSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ESTILOS DEL CHATBOT ===== -->
+<style>
+/* Variables del Chatbot */
+:root {
+    --chatbot-primary: #362420;
+    --chatbot-accent: #d4a574;
+    --chatbot-bg: #f8f9fa;
+    --chatbot-white: #ffffff;
+    --chatbot-shadow: 0 5px 30px rgba(0,0,0,0.15);
+}
+
+/* Container Principal */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Botón Flotante */
+.chatbot-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    background: linear-gradient(135deg, var(--chatbot-primary), #4a3530);
+    border: none;
+    color: var(--chatbot-accent);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--chatbot-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 40px rgba(54, 36, 32, 0.3);
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 5px 30px rgba(212, 165, 116, 0.4); }
+    50% { box-shadow: 0 5px 40px rgba(212, 165, 116, 0.7); }
+}
+
+.chatbot-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4444;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 2px solid white;
+}
+
+/* Ventana del Chat */
+.chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 380px;
+    height: 450px;
+    background: var(--chatbot-white);
+    border-radius: 15px;
+    box-shadow: var(--chatbot-shadow);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.chatbot-window.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.chatbot-header {
+    background: linear-gradient(135deg, var(--chatbot-primary), #4a3530);
+    color: white;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-header-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chatbot-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--chatbot-white);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.chatbot-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.chatbot-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.chatbot-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.chatbot-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Área de Mensajes */
+.chatbot-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    background: var(--chatbot-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: var(--chatbot-accent);
+    border-radius: 3px;
+}
+
+/* Mensajes */
+.message {
+    display: flex;
+    gap: 0.8rem;
+    animation: messageSlide 0.3s ease;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--chatbot-white);
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.message-content {
+    background: var(--chatbot-white);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    max-width: 70%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.message-content p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+.message-content p + p {
+    margin-top: 0.5rem;
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+.user-message .message-content {
+    background: var(--chatbot-primary);
+    color: white;
+}
+
+.user-message .message-avatar {
+    background: var(--chatbot-accent);
+}
+
+/* Respuestas Rápidas */
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.quick-reply {
+    background: var(--chatbot-white);
+    border: 2px solid var(--chatbot-accent);
+    color: var(--chatbot-primary);
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.quick-reply:hover {
+    background: var(--chatbot-accent);
+    color: var(--chatbot-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(212, 165, 116, 0.3);
+}
+
+/* Input */
+.chatbot-input {
+    padding: 1rem;
+    background: var(--chatbot-white);
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 0.8rem;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.chatbot-input input:focus {
+    border-color: var(--chatbot-accent);
+}
+
+.chatbot-send {
+    width: 45px;
+    height: 45px;
+    background: var(--chatbot-accent);
+    border: none;
+    border-radius: 50%;
+    color: var(--chatbot-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chatbot-send:hover {
+    background: var(--chatbot-primary);
+    color: var(--chatbot-accent);
+    transform: scale(1.1);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 0.3rem;
+    padding: 0.5rem;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--chatbot-accent);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-10px); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .chatbot-window {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 100px);
+        bottom: 80px;
+        right: 20px;
+    }
+}
+</style>
+
+<!-- ===== JAVASCRIPT DEL CHATBOT ===== -->
+<script>
+// ===== CONFIGURACIÓN =====
+const WHATSAPP_NUMBER = '19453085999'; // TU NÚMERO DE WHATSAPP (con código de país)
+const WHATSAPP_MESSAGE = 'Hola, me gustaría agendar una reunión con Texas Marketing Strategies';
+
+// Base de conocimiento del chatbot
+const knowledgeBase = {
+    services: {
+        title: "Nuestros Servicios",
+        message: "Ofrecemos:\n\n🎯 Marketing Digital\n📱 Redes Sociales\n📊 SEO & SEM\n🎨 Diseño Gráfico\n💻 Desarrollo Web\n📧 Email Marketing\n\n¿Sobre cuál te gustaría saber más?",
+        replies: ['Marketing Digital', 'Redes Sociales', 'SEO', 'Diseño Web']
+    },
+    schedule: {
+        title: "Agendar Reunión",
+        message: "¡Perfecto! Te redirigiré a WhatsApp para agendar tu reunión personalizada. 📅",
+        action: 'whatsapp'
+    },
+    internship: {
+        title: "Programa de Becarios",
+        message: "🎓 Nuestro programa ofrece:\n\n✅ Proyectos reales\n✅ Mentoría personalizada\n✅ Certificación\n✅ Experiencia internacional\n\n¿Te gustaría aplicar?",
+        replies: ['Quiero Aplicar', 'Más Información']
+    },
+    contact: {
+        title: "Contacto",
+        message: "📞 Teléfono: +1 (945) 308-5999\n📧 Email: notary@texasmarketingstrategies.net\n📍 Ubicación: Texas, USA\n\n¿Prefieres contactarnos por WhatsApp?",
+        replies: ['Enviar WhatsApp', 'Llamar', 'Enviar Email']
+    },
+    about: {
+        title: "Sobre Nosotros",
+        message: "Somos Texas Marketing Strategies, una agencia especializada en marketing digital desde 2015.\n\n✨ +10 años de experiencia\n✨ +500 proyectos completados\n✨ +200 clientes satisfechos"
+    },
+    pricing: {
+        title: "Precios",
+        message: "Nuestros servicios son personalizados según tus necesidades:\n\n💰 Marketing Digital: desde $/mes\n💰 SEO Orgánico: desde $/mes\n💰 Redes Sociales: desde $400/mes\n\n¿Quieres una cotización personalizada?"
+    }
+};
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', () => {
+    initChatbot();
+});
+
+function initChatbot() {
+    const toggle = document.getElementById('chatbotToggle');
+    const close = document.getElementById('chatbotClose');
+    const window = document.getElementById('chatbotWindow');
+    const send = document.getElementById('chatbotSend');
+    const input = document.getElementById('chatbotInput');
+    
+    // Toggle chatbot
+    toggle.addEventListener('click', () => {
+        window.classList.toggle('active');
+        document.querySelector('.chatbot-badge').style.display = 'none';
+    });
+    
+    close.addEventListener('click', () => {
+        window.classList.remove('active');
+    });
+    
+    // Enviar mensaje
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    // Quick replies
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('quick-reply')) {
+            handleQuickReply(e.target.dataset.action);
+        }
+    });
+}
+
+// ===== ENVIAR MENSAJE =====
+function sendMessage() {
+    const input = document.getElementById('chatbotInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    addUserMessage(message);
+    input.value = '';
+    
+    // Procesar respuesta
+    setTimeout(() => {
+        processMessage(message.toLowerCase());
+    }, 1000);
+}
+
+// ===== AGREGAR MENSAJE DEL USUARIO =====
+function addUserMessage(text) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+        <div class="message-avatar">
+            <i class="fas fa-user" style="color: var(--chatbot-primary); font-size: 1.2rem;"></i>
+        </div>
+        <div class="message-content">
+            <p>${text}</p>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+// ===== AGREGAR MENSAJE DEL BOT =====
+function addBotMessage(text, replies = []) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    
+    // Mostrar typing indicator
+    showTyping();
+    
+    setTimeout(() => {
+        removeTyping();
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <img src="img/logo.png" alt="Bot">
+            </div>
+            <div class="message-content">
+                <p>${text.replace(/\n/g, '<br>')}</p>
+            </div>
+        `;
+        
+        messagesContainer.appendChild(messageDiv);
+        
+        // Agregar respuestas rápidas si hay
+        if (replies.length > 0) {
+            addQuickReplies(replies);
+        }
+        
+        scrollToBottom();
+    }, 1500);
+}
+
+// ===== PROCESAR MENSAJE =====
+function processMessage(message) {
+    // Palabras clave
+    if (message.includes('servicio') || message.includes('service')) {
+        addBotMessage(knowledgeBase.services.message, knowledgeBase.services.replies);
+    }
+    else if (message.includes('reuni') || message.includes('agendar') || message.includes('cita')) {
+        addBotMessage(knowledgeBase.schedule.message);
+        setTimeout(() => openWhatsApp(), 2000);
+    }
+    else if (message.includes('becar') || message.includes('internship') || message.includes('practic')) {
+        addBotMessage(knowledgeBase.internship.message, knowledgeBase.internship.replies);
+    }
+    else if (message.includes('contact') || message.includes('telefono') || message.includes('email')) {
+        addBotMessage(knowledgeBase.contact.message, knowledgeBase.contact.replies);
+    }
+    else if (message.includes('precio') || message.includes('cost') || message.includes('cuanto')) {
+        addBotMessage(knowledgeBase.pricing.message, ['Cotización Personalizada', 'Ver Servicios']);
+    }
+    else if (message.includes('sobre') || message.includes('about') || message.includes('empresa')) {
+        addBotMessage(knowledgeBase.about.message, ['Ver Más', 'Contacto']);
+    }
+    else {
+        addBotMessage("Entiendo. ¿Te gustaría conocer nuestros servicios o agendar una reunión?", ['Ver Servicios', 'Agendar Reunión']);
+    }
+}
+
+// ===== MANEJAR RESPUESTAS RÁPIDAS =====
+function handleQuickReply(action) {
+    const actionMap = {
+        'services': () => addBotMessage(knowledgeBase.services.message, knowledgeBase.services.replies),
+        'schedule': () => {
+            addBotMessage(knowledgeBase.schedule.message);
+            setTimeout(() => openWhatsApp(), 2000);
+        },
+        'internship': () => addBotMessage(knowledgeBase.internship.message, knowledgeBase.internship.replies),
+        'contact': () => addBotMessage(knowledgeBase.contact.message, knowledgeBase.contact.replies)
+    };
+    
+    if (actionMap[action]) {
+        actionMap[action]();
+    }
+    
+    // Remover quick replies después de seleccionar
+    document.getElementById('quickReplies')?.remove();
+}
+
+// ===== AGREGAR RESPUESTAS RÁPIDAS =====
+function addQuickReplies(replies) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    const existingReplies = document.getElementById('quickReplies');
+    if (existingReplies) existingReplies.remove();
+    
+    const repliesDiv = document.createElement('div');
+    repliesDiv.className = 'quick-replies';
+    repliesDiv.id = 'quickReplies';
+    
+    replies.forEach(reply => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-reply';
+        btn.textContent = reply;
+        btn.onclick = () => {
+            addUserMessage(reply);
+            setTimeout(() => processMessage(reply.toLowerCase()), 500);
+            repliesDiv.remove();
+        };
+        repliesDiv.appendChild(btn);
+    });
+    
+    messagesContainer.appendChild(repliesDiv);
+    scrollToBottom();
+}
+
+// ===== TYPING INDICATOR =====
+function showTyping() {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot-message';
+    typingDiv.id = 'typing';
+    typingDiv.innerHTML = `
+        <div class="message-avatar">
+            <img src="img/logo.png" alt="Bot">
+        </div>
+        <div class="message-content">
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    `;
+    messagesContainer.appendChild(typingDiv);
+    scrollToBottom();
+}
+
+function removeTyping() {
+    document.getElementById('typing')?.remove();
+}
+
+// ===== ABRIR WHATSAPP =====
+function openWhatsApp() {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+    window.open(url, '_blank');
+}
+
+// ===== SCROLL =====
+function scrollToBottom() {
+    const container = document.getElementById('chatbotMessages');
+    container.scrollTop = container.scrollHeight;
+}
+
+console.log('🤖 Chatbot inicializado correctamente!');
+</script>
+</body>
+
+</html>

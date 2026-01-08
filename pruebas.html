@@ -1,0 +1,687 @@
+<!-- ===== CHATBOT - AGREGAR ANTES DE </body> EN TODAS LAS PÁGINAS ===== -->
+
+<!-- Chatbot Container -->
+<div class="chatbot-container" id="chatbot">
+    <!-- Botón flotante -->
+    <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-comments"></i>
+        <span class="chatbot-badge">1</span>
+    </button>
+
+    <!-- Ventana del Chat -->
+    <div class="chatbot-window" id="chatbotWindow">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar">
+                    <img src="img/logo.png" alt="Texas Marketing">
+                </div>
+                <div>
+                    <h4>Texas Marketing</h4>
+                    <span class="chatbot-status">
+                        <span class="status-dot"></span> Online
+                    </span>
+                </div>
+            </div>
+            <button class="chatbot-close" id="chatbotClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mensajes -->
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Mensaje de bienvenida -->
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <img src="img/logo.png" alt="Bot">
+                </div>
+                <div class="message-content">
+                    <p>👋 ¡Hola! Soy el asistente de Texas Marketing Strategies.</p>
+                    <p>¿En qué puedo ayudarte hoy?</p>
+                </div>
+            </div>
+
+            <!-- Opciones rápidas iniciales -->
+            <div class="quick-replies" id="quickReplies">
+                <button class="quick-reply" data-action="services">
+                    <i class="fas fa-briefcase"></i> Ver Servicios
+                </button>
+                <button class="quick-reply" data-action="schedule">
+                    <i class="far fa-calendar"></i> Agendar Reunión
+                </button>
+                <button class="quick-reply" data-action="internship">
+                    <i class="fas fa-graduation-cap"></i> Programa de Becarios
+                </button>
+                <button class="quick-reply" data-action="contact">
+                    <i class="fas fa-envelope"></i> Contacto
+                </button>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chatbot-input">
+            <input 
+                type="text" 
+                id="chatbotInput" 
+                placeholder="Escribe tu mensaje..."
+                autocomplete="off"
+            >
+            <button class="chatbot-send" id="chatbotSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ESTILOS DEL CHATBOT ===== -->
+<style>
+/* Variables del Chatbot */
+:root {
+    --chatbot-primary: #362420;
+    --chatbot-accent: #d4a574;
+    --chatbot-bg: #f8f9fa;
+    --chatbot-white: #ffffff;
+    --chatbot-shadow: 0 5px 30px rgba(0,0,0,0.15);
+}
+
+/* Container Principal */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Botón Flotante */
+.chatbot-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    background: linear-gradient(135deg, var(--chatbot-primary), #4a3530);
+    border: none;
+    color: var(--chatbot-accent);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--chatbot-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 40px rgba(54, 36, 32, 0.3);
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 5px 30px rgba(212, 165, 116, 0.4); }
+    50% { box-shadow: 0 5px 40px rgba(212, 165, 116, 0.7); }
+}
+
+.chatbot-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4444;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 2px solid white;
+}
+
+/* Ventana del Chat */
+.chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 380px;
+    height: 450px;
+    background: var(--chatbot-white);
+    border-radius: 15px;
+    box-shadow: var(--chatbot-shadow);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.chatbot-window.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.chatbot-header {
+    background: linear-gradient(135deg, var(--chatbot-primary), #4a3530);
+    color: white;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-header-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chatbot-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--chatbot-white);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.chatbot-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.chatbot-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.chatbot-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.chatbot-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Área de Mensajes */
+.chatbot-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    background: var(--chatbot-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: var(--chatbot-accent);
+    border-radius: 3px;
+}
+
+/* Mensajes */
+.message {
+    display: flex;
+    gap: 0.8rem;
+    animation: messageSlide 0.3s ease;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--chatbot-white);
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.message-content {
+    background: var(--chatbot-white);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    max-width: 70%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.message-content p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+.message-content p + p {
+    margin-top: 0.5rem;
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+.user-message .message-content {
+    background: var(--chatbot-primary);
+    color: white;
+}
+
+.user-message .message-avatar {
+    background: var(--chatbot-accent);
+}
+
+/* Respuestas Rápidas */
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.quick-reply {
+    background: var(--chatbot-white);
+    border: 2px solid var(--chatbot-accent);
+    color: var(--chatbot-primary);
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.quick-reply:hover {
+    background: var(--chatbot-accent);
+    color: var(--chatbot-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(212, 165, 116, 0.3);
+}
+
+/* Input */
+.chatbot-input {
+    padding: 1rem;
+    background: var(--chatbot-white);
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 0.8rem;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.chatbot-input input:focus {
+    border-color: var(--chatbot-accent);
+}
+
+.chatbot-send {
+    width: 45px;
+    height: 45px;
+    background: var(--chatbot-accent);
+    border: none;
+    border-radius: 50%;
+    color: var(--chatbot-primary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chatbot-send:hover {
+    background: var(--chatbot-primary);
+    color: var(--chatbot-accent);
+    transform: scale(1.1);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 0.3rem;
+    padding: 0.5rem;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--chatbot-accent);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-10px); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .chatbot-window {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 100px);
+        bottom: 80px;
+        right: 20px;
+    }
+}
+</style>
+
+<!-- ===== JAVASCRIPT DEL CHATBOT ===== -->
+<script>
+// ===== CONFIGURACIÓN =====
+const WHATSAPP_NUMBER = '19453085999'; // TU NÚMERO DE WHATSAPP (con código de país)
+const WHATSAPP_MESSAGE = 'Hola, me gustaría agendar una reunión con Texas Marketing Strategies';
+
+// Base de conocimiento del chatbot
+const knowledgeBase = {
+    services: {
+        title: "Nuestros Servicios",
+        message: "Ofrecemos:\n\n🎯 Marketing Digital\n📱 Redes Sociales\n📊 SEO & SEM\n🎨 Diseño Gráfico\n💻 Desarrollo Web\n📧 Email Marketing\n\n¿Sobre cuál te gustaría saber más?",
+        replies: ['Marketing Digital', 'Redes Sociales', 'SEO', 'Diseño Web']
+    },
+    schedule: {
+        title: "Agendar Reunión",
+        message: "¡Perfecto! Te redirigiré a WhatsApp para agendar tu reunión personalizada. 📅",
+        action: 'whatsapp'
+    },
+    internship: {
+        title: "Programa de Becarios",
+        message: "🎓 Nuestro programa ofrece:\n\n✅ Proyectos reales\n✅ Mentoría personalizada\n✅ Certificación\n✅ Experiencia internacional\n\n¿Te gustaría aplicar?",
+        replies: ['Quiero Aplicar', 'Más Información']
+    },
+    contact: {
+        title: "Contacto",
+        message: "📞 Teléfono: +1 (945) 308-5999\n📧 Email: notary@texasmarketingstrategies.net\n📍 Ubicación: Texas, USA\n\n¿Prefieres contactarnos por WhatsApp?",
+        replies: ['Enviar WhatsApp', 'Llamar', 'Enviar Email']
+    },
+    about: {
+        title: "Sobre Nosotros",
+        message: "Somos Texas Marketing Strategies, una agencia especializada en marketing digital desde 2015.\n\n✨ +10 años de experiencia\n✨ +500 proyectos completados\n✨ +200 clientes satisfechos"
+    },
+    pricing: {
+        title: "Precios",
+        message: "Nuestros servicios son personalizados según tus necesidades:\n\n💰 Marketing Digital: desde $500/mes\n💰 SEO Orgánico: desde $300/mes\n💰 Redes Sociales: desde $400/mes\n\n¿Quieres una cotización personalizada?"
+    }
+};
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', () => {
+    initChatbot();
+});
+
+function initChatbot() {
+    const toggle = document.getElementById('chatbotToggle');
+    const close = document.getElementById('chatbotClose');
+    const window = document.getElementById('chatbotWindow');
+    const send = document.getElementById('chatbotSend');
+    const input = document.getElementById('chatbotInput');
+    
+    // Toggle chatbot
+    toggle.addEventListener('click', () => {
+        window.classList.toggle('active');
+        document.querySelector('.chatbot-badge').style.display = 'none';
+    });
+    
+    close.addEventListener('click', () => {
+        window.classList.remove('active');
+    });
+    
+    // Enviar mensaje
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    // Quick replies
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('quick-reply')) {
+            handleQuickReply(e.target.dataset.action);
+        }
+    });
+}
+
+// ===== ENVIAR MENSAJE =====
+function sendMessage() {
+    const input = document.getElementById('chatbotInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    addUserMessage(message);
+    input.value = '';
+    
+    // Procesar respuesta
+    setTimeout(() => {
+        processMessage(message.toLowerCase());
+    }, 1000);
+}
+
+// ===== AGREGAR MENSAJE DEL USUARIO =====
+function addUserMessage(text) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+        <div class="message-avatar">
+            <i class="fas fa-user" style="color: var(--chatbot-primary); font-size: 1.2rem;"></i>
+        </div>
+        <div class="message-content">
+            <p>${text}</p>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+// ===== AGREGAR MENSAJE DEL BOT =====
+function addBotMessage(text, replies = []) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    
+    // Mostrar typing indicator
+    showTyping();
+    
+    setTimeout(() => {
+        removeTyping();
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <img src="img/logo.png" alt="Bot">
+            </div>
+            <div class="message-content">
+                <p>${text.replace(/\n/g, '<br>')}</p>
+            </div>
+        `;
+        
+        messagesContainer.appendChild(messageDiv);
+        
+        // Agregar respuestas rápidas si hay
+        if (replies.length > 0) {
+            addQuickReplies(replies);
+        }
+        
+        scrollToBottom();
+    }, 1500);
+}
+
+// ===== PROCESAR MENSAJE =====
+function processMessage(message) {
+    // Palabras clave
+    if (message.includes('servicio') || message.includes('service')) {
+        addBotMessage(knowledgeBase.services.message, knowledgeBase.services.replies);
+    }
+    else if (message.includes('reuni') || message.includes('agendar') || message.includes('cita')) {
+        addBotMessage(knowledgeBase.schedule.message);
+        setTimeout(() => openWhatsApp(), 2000);
+    }
+    else if (message.includes('becar') || message.includes('internship') || message.includes('practic')) {
+        addBotMessage(knowledgeBase.internship.message, knowledgeBase.internship.replies);
+    }
+    else if (message.includes('contact') || message.includes('telefono') || message.includes('email')) {
+        addBotMessage(knowledgeBase.contact.message, knowledgeBase.contact.replies);
+    }
+    else if (message.includes('precio') || message.includes('cost') || message.includes('cuanto')) {
+        addBotMessage(knowledgeBase.pricing.message, ['Cotización Personalizada', 'Ver Servicios']);
+    }
+    else if (message.includes('sobre') || message.includes('about') || message.includes('empresa')) {
+        addBotMessage(knowledgeBase.about.message, ['Ver Más', 'Contacto']);
+    }
+    else {
+        addBotMessage("Entiendo. ¿Te gustaría conocer nuestros servicios o agendar una reunión?", ['Ver Servicios', 'Agendar Reunión']);
+    }
+}
+
+// ===== MANEJAR RESPUESTAS RÁPIDAS =====
+function handleQuickReply(action) {
+    const actionMap = {
+        'services': () => addBotMessage(knowledgeBase.services.message, knowledgeBase.services.replies),
+        'schedule': () => {
+            addBotMessage(knowledgeBase.schedule.message);
+            setTimeout(() => openWhatsApp(), 2000);
+        },
+        'internship': () => addBotMessage(knowledgeBase.internship.message, knowledgeBase.internship.replies),
+        'contact': () => addBotMessage(knowledgeBase.contact.message, knowledgeBase.contact.replies)
+    };
+    
+    if (actionMap[action]) {
+        actionMap[action]();
+    }
+    
+    // Remover quick replies después de seleccionar
+    document.getElementById('quickReplies')?.remove();
+}
+
+// ===== AGREGAR RESPUESTAS RÁPIDAS =====
+function addQuickReplies(replies) {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    const existingReplies = document.getElementById('quickReplies');
+    if (existingReplies) existingReplies.remove();
+    
+    const repliesDiv = document.createElement('div');
+    repliesDiv.className = 'quick-replies';
+    repliesDiv.id = 'quickReplies';
+    
+    replies.forEach(reply => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-reply';
+        btn.textContent = reply;
+        btn.onclick = () => {
+            addUserMessage(reply);
+            setTimeout(() => processMessage(reply.toLowerCase()), 500);
+            repliesDiv.remove();
+        };
+        repliesDiv.appendChild(btn);
+    });
+    
+    messagesContainer.appendChild(repliesDiv);
+    scrollToBottom();
+}
+
+// ===== TYPING INDICATOR =====
+function showTyping() {
+    const messagesContainer = document.getElementById('chatbotMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot-message';
+    typingDiv.id = 'typing';
+    typingDiv.innerHTML = `
+        <div class="message-avatar">
+            <img src="img/logo.png" alt="Bot">
+        </div>
+        <div class="message-content">
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    `;
+    messagesContainer.appendChild(typingDiv);
+    scrollToBottom();
+}
+
+function removeTyping() {
+    document.getElementById('typing')?.remove();
+}
+
+// ===== ABRIR WHATSAPP =====
+function openWhatsApp() {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+    window.open(url, '_blank');
+}
+
+// ===== SCROLL =====
+function scrollToBottom() {
+    const container = document.getElementById('chatbotMessages');
+    container.scrollTop = container.scrollHeight;
+}
+
+console.log('🤖 Chatbot inicializado correctamente!');
+</script>
